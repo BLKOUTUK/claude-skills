@@ -1,0 +1,9 @@
+# Windows WSL artifacts
+*:Zone.Identifier
+
+# Symlinked skills (managed elsewhere)
+remotion-best-practices
+
+# OS files
+.DS_Store
+Thumbs.db
