@@ -28,3 +28,4 @@ If yes, Claude fetches the raw GitHub URL and compares. If different, it tells t
 - blkout-themes: https://raw.githubusercontent.com/BLKOUTUK/claude-skills/main/for-claude-ai/blkout-themes.md
 - community-web-design: https://raw.githubusercontent.com/BLKOUTUK/claude-skills/main/for-claude-ai/community-web-design.md
 - uk-community-funding: https://raw.githubusercontent.com/BLKOUTUK/claude-skills/main/for-claude-ai/uk-community-funding.md
+- blkout-community-media: https://raw.githubusercontent.com/BLKOUTUK/claude-skills/main/for-claude-ai/blkout-community-media.md
