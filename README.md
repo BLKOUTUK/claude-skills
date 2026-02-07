@@ -27,13 +27,18 @@ Copy skill directories to your Claude Desktop skills location.
 | **blkout-themes** | 5 themed palettes (Revolutionary Red, Community Gold, Liberation Teal, Trans Joy, Abolition Dark) | Styling BLKOUT presentations, documents, web artifacts |
 | **community-web-design** | Web page patterns for community organising — landing pages, dashboards, interactive tools | Building websites for community orgs, campaigns, membership portals |
 
+### Funding & Sustainability
+
+| Skill | Purpose | Triggers on |
+|-------|---------|-------------|
+| **uk-community-funding** | Learning-oriented grant writing — tracks applications, captures funder feedback, evolves with each cycle | Writing grant applications, EOIs, funding proposals, funder conversations |
+
 ### Planned Skills
 
 | Skill | Purpose | Status |
 |-------|---------|--------|
 | **community-media** | Podcast and video content production | In development (Claude Desktop) |
 | **blkout-voice** | Writing voice and tone — the sound equivalent of blkout-brand | Planned |
-| **uk-community-funding** | Grant applications, funder framing, VCSE sector language, theory of change | Planned |
 
 ## Design Principles
 
@@ -60,12 +65,16 @@ skills/
 │   ├── SKILL.md              # Theme collection
 │   └── themes/
 │       └── revolutionary-red.md
-└── community-web-design/
-    ├── SKILL.md              # Core skill (adapted from ui-ux-pro-max-skill)
-    └── references/
-        ├── patterns-interactive.md  # Surveys, quizzes, directories
-        ├── patterns-landing.md      # Campaigns, coalitions, investor pages
-        └── visual-systems.md        # Colour, typography, spacing, components
+├── community-web-design/
+│   ├── SKILL.md              # Core skill (adapted from ui-ux-pro-max-skill)
+│   └── references/
+│       ├── patterns-interactive.md  # Surveys, quizzes, directories
+│       ├── patterns-landing.md      # Campaigns, coalitions, investor pages
+│       └── visual-systems.md        # Colour, typography, spacing, components
+└── uk-community-funding/
+    ├── SKILL.md              # Learning-oriented grant writing
+    ├── applications/          # Log of what we've submitted
+    └── feedback/              # Funder feedback (the most valuable part)
 ```
 
 ## Attribution
