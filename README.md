@@ -33,11 +33,16 @@ Copy skill directories to your Claude Desktop skills location.
 |-------|---------|-------------|
 | **uk-community-funding** | Learning-oriented grant writing — tracks applications, captures funder feedback, evolves with each cycle | Writing grant applications, EOIs, funding proposals, funder conversations |
 
+### Content Production
+
+| Skill | Purpose | Triggers on |
+|-------|---------|-------------|
+| **blkout-community-media** | Podcast and video production — briefings, consent, transcription, storyboarding, video generation | Podcast production, recording, transcription, video storyboard, participant briefing, media consent |
+
 ### Planned Skills
 
 | Skill | Purpose | Status |
 |-------|---------|--------|
-| **community-media** | Podcast and video content production | In development (Claude Desktop) |
 | **blkout-voice** | Writing voice and tone — the sound equivalent of blkout-brand | Planned |
 
 ## Design Principles
@@ -71,10 +76,22 @@ skills/
 │       ├── patterns-interactive.md  # Surveys, quizzes, directories
 │       ├── patterns-landing.md      # Campaigns, coalitions, investor pages
 │       └── visual-systems.md        # Colour, typography, spacing, components
-└── uk-community-funding/
-    ├── SKILL.md              # Learning-oriented grant writing
-    ├── applications/          # Log of what we've submitted
-    └── feedback/              # Funder feedback (the most valuable part)
+├── uk-community-funding/
+│   ├── SKILL.md              # Learning-oriented grant writing
+│   ├── applications/          # Log of what we've submitted
+│   └── feedback/              # Funder feedback (the most valuable part)
+├── blkout-community-media/
+│   ├── SKILL.md              # Podcast & video production
+│   ├── references/            # Consent, copyright, producer checklist, repurposing
+│   ├── templates/             # Briefings (4 formats) + email templates
+│   └── scripts/               # Python: transcribe, edit, storyboard, video gen
+└── for-claude-ai/             # Paste-ready exports with sync headers
+    ├── UPDATE-HEADER.md       # How the sync protocol works
+    ├── blkout-brand.md
+    ├── blkout-themes.md
+    ├── community-web-design.md
+    ├── uk-community-funding.md
+    └── blkout-community-media.md
 ```
 
 ## Attribution
