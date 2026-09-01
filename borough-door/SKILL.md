@@ -71,7 +71,7 @@ Generate via **blkout-image-gen** (never raw tool calls): pencil-sketch prompt �
    - Add the borough's name to the `boroughs` keyword list in `apps/comms-blkout/src/pages/discover/DiscoverPage.tsx` so search finds it.
    - The map geometry is **duplicated** at `apps/comms-blkout/src/data/boroughs-map.json`. If the geometry is ever regenerated, copy it to both.
    - ⚠ **Discover lives in comms-blkout, NOT community-platform** — that app's `discover` route is a hard redirect to comms. Editing it there builds a page nobody reaches.
-   - ⚠ **As at 31 Aug 2026 comms-blkout cannot `npm run build`**: 12 pre-existing TypeScript errors in `src/socialsync-content-generation/` (Supabase generated-types drift, inserts resolving to `never`). `vite build` succeeds, but the pipeline is `tsc -b && vite build`, so **nothing deploys from that app until they are fixed**. Verify with a stash test before assuming a build failure is yours.
+   - ⚠ **A local `npm run build` in comms-blkout can fail on code that never reaches the deploy.** `src/socialsync-content-generation/` is **gitignored** (`.gitignore:36`, 0 tracked files), so it is absent from the repo, absent from the Docker build context, and `tsc -b` never sees it in CI — the app deploys fine regardless. It carried 12 TypeScript errors locally until 1 Sep 2026. **Before treating a local build failure as a blocker, check whether the failing paths are tracked** (`git ls-files <dir>`); an untracked directory cannot break a deploy.
 
 ## 7 · The template — adopted 31 Aug 2026
 
