@@ -65,13 +65,32 @@ Generate via **blkout-image-gen** (never raw tool calls): pencil-sketch prompt �
    ⚠ `git status` clean also means **no render artefacts**: `design-loop/render.py` drops a multi-MB `index-render/` beside the page. Now gitignored in this repo; check it stayed out.
    ⚠ When editing an existing data file, **do not round-trip it through `json.dump`** — it reformats every compact object and buries a two-line change in a 400-line diff. Edit the text surgically and re-parse to confirm it is still valid JSON.
 5. Acceptance test (intervention 4): the real query — "groups for Black gay men in <borough>" — against ChatGPT/Claude/Gemini, before and after.
-6. **Open the door on the Discover gateway.** The map on `comms.blkoutuk.com/discover` is how people find the doors from the platform, and its borough list is **hardcoded** — a new door is invisible there until you add it.
-   - File: `apps/comms-blkout/src/components/discover/BoroughDoorsWidget.tsx` → add `<slug>: '<Borough>'` to `OPEN_DOORS`.
-   - Deliberately not a runtime fetch: a cross-origin call to events.blkoutuk.com just to render a menu fails worse than a stale list. The trade is one line per door.
-   - Add the borough's name to the `boroughs` keyword list in `apps/comms-blkout/src/pages/discover/DiscoverPage.tsx` so search finds it.
-   - The map geometry is **duplicated** at `apps/comms-blkout/src/data/boroughs-map.json`. If the geometry is ever regenerated, copy it to both.
+6. **Register the door on the Discover gateway — TWO edits, both required.** The map on `comms.blkoutuk.com/discover` is how people reach the doors from the platform. Its borough list is **hardcoded**, so a new door is invisible there until both of these are done. Doing only the first is the easy mistake: on 2 Sept 2026 Waltham Forest was added to `OPEN_DOORS` but not the keywords, so the map linked it while searching "waltham" returned nothing.
+
+   **6a. Make it appear on the map** — `apps/comms-blkout/src/components/discover/BoroughDoorsWidget.tsx`, add to `OPEN_DOORS`:
+   ```
+   'waltham-forest': 'Waltham Forest',    // quote the key if the slug has a hyphen
+   ```
+
+   **6b. Make it findable by search** — `apps/comms-blkout/src/pages/discover/DiscoverPage.tsx`, add the borough to the `boroughs` keyword list. A hyphenated borough needs both forms (`'waltham'` and `'waltham forest'`), because the matcher tests substrings against whole keywords.
+
+   **Verify both before calling it done** (a line-based `grep` misses a quoted key — that is how the gap above went unseen):
+   ```bash
+   cd apps/comms-blkout && python3 -c "
+   import re
+   w=open('src/components/discover/BoroughDoorsWidget.tsx').read()
+   d=open('src/pages/discover/DiscoverPage.tsx').read()
+   doors=re.findall(r\"^\s*'?([a-z-]+)'?:\", re.search(r'const OPEN_DOORS[^{]*\{(.*?)\n\};', w, re.S).group(1), re.M)
+   kw=re.findall(r\"'([^']+)'\", re.search(r\"id: 'boroughs', keywords: \[(.*?)\]\", d, re.S).group(1))
+   missing=[x for x in doors if not any(x.split('-')[0] in k for k in kw)]
+   print(f'{len(doors)} doors; unsearchable: {missing or \"none\"}')"
+   ```
+
+   - Deliberately not a runtime fetch: a cross-origin call to events.blkoutuk.com just to render a menu fails worse than a stale list. The trade is these two lines per door.
+   - Check the ONS name slugifies to the door slug, or the map will not highlight it. All eleven have so far.
+   - The map geometry is **duplicated** at `apps/comms-blkout/src/data/boroughs-map.json`. If it is ever regenerated, copy to both.
    - ⚠ **Discover lives in comms-blkout, NOT community-platform** — that app's `discover` route is a hard redirect to comms. Editing it there builds a page nobody reaches.
-   - ⚠ **A local `npm run build` in comms-blkout can fail on code that never reaches the deploy.** `src/socialsync-content-generation/` is **gitignored** (`.gitignore:36`, 0 tracked files), so it is absent from the repo, absent from the Docker build context, and `tsc -b` never sees it in CI — the app deploys fine regardless. It carried 12 TypeScript errors locally until 1 Sep 2026. **Before treating a local build failure as a blocker, check whether the failing paths are tracked** (`git ls-files <dir>`); an untracked directory cannot break a deploy.
+   - ⚠ **A local `npm run build` in comms-blkout can fail on code that never reaches the deploy.** `src/socialsync-content-generation/` is **gitignored** (`.gitignore:36`, 0 tracked files), so it is absent from the repo, absent from the Docker build context, and `tsc -b` never sees it in CI — the app deploys fine regardless. **Before treating a local build failure as a blocker, check whether the failing paths are tracked** (`git ls-files <dir>`); an untracked directory cannot break a deploy.
 
 ## 7 · The template — adopted 31 Aug 2026
 
