@@ -16,7 +16,7 @@ Built 27 Aug 2026 from the Croydon/Lambeth/Enfield proof build (the strategy: `~
 
 
 **Known-broken, as at 31 Aug 2026** (check before assuming these are fixed):
-- **Lambeth's four archive links are dead** — they use `blkoutuk.com/stories/<slug>`, which returns the SPA shell for every slug. See §1.3. Either republish the pieces or empty the box.
+- ~~Lambeth's four archive links are dead~~ **WRONG — retracted 3 Sept 2026.** All four resolve; the SPA shell made them look dead. Haringey's archive box was emptied on that false conclusion and has been restored. See §1.3.
 - **Currency outstanding**: Croydon 6 entries, Lambeth 11, Enfield 2. Haringey is the only door at zero. The generator prints the list every build.
 - **Haringey's acceptance test (§6.5) has not been run** — it needs the page indexed first.
 
@@ -24,7 +24,12 @@ Built 27 Aug 2026 from the Croydon/Lambeth/Enfield proof build (the strategy: `~
 1. **Own project corpora** (`~/blkout/projects/*`) — grep for the borough. The Croydon kinship story sat unread in Ivor's Compass docs while I searched databases.
 2. **Events DB** (Supabase `events`, status='approved', location/title/description ilike) → the "recently in the borough" strip. **Past events are rot-proof data** — proof of life that never goes stale.
 3. **Story archive** (`legacy_articles` + `published_articles`, title/content ilike) → the "From the BLKOUT archive" box.
-   ⚠ **A row in the table does NOT mean a page exists.** `blkoutuk.com/stories/<slug>` is a stale pattern — it returns a ~4.9 KB SPA shell for *every* slug, including ones that work elsewhere. `voices.blkoutuk.com/articles/<slug>` renders only what is actually published there; legacy rows render on neither. **Verify each deep link by content, not status:** fetch it, and check the `<title>` names the article and the byte count differs from an invented slug on the same route. Four identical byte counts = four dead links returning 200. Haringey's archive box is empty for exactly this reason; **Lambeth ships four dead links today** and is still to be fixed.
+   ⚠ **Test a deep link with the API the page actually calls, NOT with curl on the URL.** `blkoutuk.com` is a client-rendered SPA: **every** route returns the same ~4.9 KB shell, valid or not, and the article loads via JS. Comparing byte counts there proves nothing — on 31 Aug I read four identical shells as four dead links, emptied Haringey's archive box on that basis, and was wrong; all four articles were live the whole time. The real check is the endpoint `getStoryBySlug` uses, with an invented slug as the control:
+   ```bash
+   curl -s "https://blkoutuk.com/api/stories?slug=<slug>&limit=1" | python3 -c "import json,sys; d=json.load(sys.stdin); print(((d.get('data') or {}).get('stories') or [{}])[0].get('title','NO STORY'))"
+   ```
+   A real slug returns its title; an invented one returns zero stories. **Byte-count comparison is only valid where routes are prerendered** — `voices.blkoutuk.com` does return different bytes per article, which is what made the wrong inference look sound.
+
 4. **Archive DB** (`~/archive_2026/search-archive.py`) — for INTERNAL knowledge only. **The archive's water is private water**: correspondence informs, it is never quoted on a public page.
 5. **Images**: `findimg` first, BUT it answers content-type queries, not identity queries — also run `find /mnt/e -iname "*<borough>*" -o -iname "*<event>*"` (McAlmont was found by filename, not by caption). Provenance check EVERY image before use — a credited photo (@handle) is someone else's; Rob's portrait is not a crowd shot.
 6. **The local curators' sites** — every borough has someone already curating (LGBT forum links page, council LGBT page, community org programme). Mine their directories BEFORE drafting; their post-dates reveal THEIR currency too. Bitten twice in one day skipping this.
